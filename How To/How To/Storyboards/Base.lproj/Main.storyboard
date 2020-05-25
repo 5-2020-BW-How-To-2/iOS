@@ -28,7 +28,7 @@
         <!--My How To's-->
         <scene sceneID="F2y-d9-HWC">
             <objects>
-                <tableViewController id="0Sd-ge-z1v" sceneMemberID="viewController">
+                <tableViewController id="0Sd-ge-z1v" customClass="MyHowToTableViewController" customModule="How_To" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="eOq-tx-MHd">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -82,7 +82,7 @@
         <!--Create How To-->
         <scene sceneID="oPZ-0k-Owk">
             <objects>
-                <viewController id="KMn-CC-TtU" sceneMemberID="viewController">
+                <viewController id="KMn-CC-TtU" customClass="CreateHowToViewController" customModule="How_To" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="xHb-zL-ZFj">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -101,7 +101,7 @@
         <!--Edit How To-->
         <scene sceneID="SC2-Sa-xwG">
             <objects>
-                <viewController id="46j-1x-M5X" sceneMemberID="viewController">
+                <viewController id="46j-1x-M5X" customClass="EditHowToViewController" customModule="How_To" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="oTX-jw-ATR">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -117,7 +117,7 @@
         <!--How To's-->
         <scene sceneID="DBX-Pd-Dri">
             <objects>
-                <tableViewController id="VQv-zF-7vS" sceneMemberID="viewController">
+                <tableViewController id="VQv-zF-7vS" customClass="HowToTableViewController" customModule="How_To" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ANc-nV-Tao">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -165,10 +165,10 @@
             </objects>
             <point key="canvasLocation" x="397.10144927536237" y="-494.19642857142856"/>
         </scene>
-        <!--View Controller-->
+        <!--Login View Controller-->
         <scene sceneID="0gy-Q9-RNS">
             <objects>
-                <viewController id="aES-CD-Mor" sceneMemberID="viewController">
+                <viewController id="aES-CD-Mor" customClass="LoginViewController" customModule="How_To" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="48Q-d9-p5b">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -179,6 +179,9 @@
                                     <segment title="Sign In"/>
                                     <segment title="Sign Up"/>
                                 </segments>
+                                <connections>
+                                    <action selector="loginTypeChanged:" destination="aES-CD-Mor" eventType="valueChanged" id="ahP-q2-HSx"/>
+                                </connections>
                             </segmentedControl>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="i2Q-l7-sp7">
                                 <rect key="frame" x="20" y="147" width="374" height="84"/>
@@ -197,6 +200,9 @@
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BHD-so-2S4">
                                 <rect key="frame" x="40" y="247" width="334" height="30"/>
+                                <connections>
+                                    <action selector="submitButtonTapped:" destination="aES-CD-Mor" eventType="touchUpInside" id="2AX-Lb-tfv"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -212,6 +218,12 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="J0T-PP-zlt"/>
                     </view>
+                    <connections>
+                        <outlet property="loginTypeSegmentedControl" destination="j5m-i7-pWi" id="OjZ-I1-TKG"/>
+                        <outlet property="passwordTextField" destination="N0b-7l-h4P" id="JTv-dT-D3C"/>
+                        <outlet property="submitButton" destination="BHD-so-2S4" id="3N5-7n-CsG"/>
+                        <outlet property="usernameTextField" destination="9VD-5Q-hPC" id="2FW-AF-3Jn"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d3L-H8-wHF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -220,7 +232,7 @@
         <!--How To Steps:-->
         <scene sceneID="cWj-jJ-qdl">
             <objects>
-                <viewController id="iAE-c5-yRu" sceneMemberID="viewController">
+                <viewController id="iAE-c5-yRu" customClass="HowToDetailsViewController" customModule="How_To" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="acz-9J-uwT">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
