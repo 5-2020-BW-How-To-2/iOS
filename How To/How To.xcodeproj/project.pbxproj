@@ -17,6 +17,7 @@
 		27C5D95B247C1E2600A519E2 /* MyHowToTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C5D95A247C1E2600A519E2 /* MyHowToTableViewController.swift */; };
 		27C5D95D247C1E8000A519E2 /* HowToDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C5D95C247C1E8000A519E2 /* HowToDetailsViewController.swift */; };
 		27C5D95F247C1EC000A519E2 /* CreateHowToViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C5D95E247C1EC000A519E2 /* CreateHowToViewController.swift */; };
+		27C5D961247C1EF400A519E2 /* EditHowToViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C5D960247C1EF400A519E2 /* EditHowToViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		27C5D95A247C1E2600A519E2 /* MyHowToTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHowToTableViewController.swift; sourceTree = "<group>"; };
 		27C5D95C247C1E8000A519E2 /* HowToDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToDetailsViewController.swift; sourceTree = "<group>"; };
 		27C5D95E247C1EC000A519E2 /* CreateHowToViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateHowToViewController.swift; sourceTree = "<group>"; };
+		27C5D960247C1EF400A519E2 /* EditHowToViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHowToViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +117,7 @@
 				27C5D95A247C1E2600A519E2 /* MyHowToTableViewController.swift */,
 				27C5D95C247C1E8000A519E2 /* HowToDetailsViewController.swift */,
 				27C5D95E247C1EC000A519E2 /* CreateHowToViewController.swift */,
+				27C5D960247C1EF400A519E2 /* EditHowToViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -196,6 +199,7 @@
 				27C5D93E247C0C7F00A519E2 /* AppDelegate.swift in Sources */,
 				27C5D95F247C1EC000A519E2 /* CreateHowToViewController.swift in Sources */,
 				27C5D95D247C1E8000A519E2 /* HowToDetailsViewController.swift in Sources */,
+				27C5D961247C1EF400A519E2 /* EditHowToViewController.swift in Sources */,
 				27C5D940247C0C7F00A519E2 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
