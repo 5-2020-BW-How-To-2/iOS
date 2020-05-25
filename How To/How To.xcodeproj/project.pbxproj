@@ -13,6 +13,7 @@
 		27C5D947247C0C8600A519E2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27C5D946247C0C8600A519E2 /* Assets.xcassets */; };
 		27C5D94A247C0C8600A519E2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27C5D948247C0C8600A519E2 /* LaunchScreen.storyboard */; };
 		27C5D957247C1DB300A519E2 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C5D956247C1DB300A519E2 /* LoginViewController.swift */; };
+		27C5D959247C1DF600A519E2 /* HowToTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C5D958247C1DF600A519E2 /* HowToTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		27C5D949247C0C8600A519E2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		27C5D94B247C0C8600A519E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		27C5D956247C1DB300A519E2 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		27C5D958247C1DF600A519E2 /* HowToTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				27C5D956247C1DB300A519E2 /* LoginViewController.swift */,
+				27C5D958247C1DF600A519E2 /* HowToTableViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -179,6 +182,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				27C5D957247C1DB300A519E2 /* LoginViewController.swift in Sources */,
+				27C5D959247C1DF600A519E2 /* HowToTableViewController.swift in Sources */,
 				27C5D93E247C0C7F00A519E2 /* AppDelegate.swift in Sources */,
 				27C5D940247C0C7F00A519E2 /* SceneDelegate.swift in Sources */,
 			);
