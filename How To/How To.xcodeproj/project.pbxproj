@@ -15,6 +15,7 @@
 		27C5D957247C1DB300A519E2 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C5D956247C1DB300A519E2 /* LoginViewController.swift */; };
 		27C5D959247C1DF600A519E2 /* HowToTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C5D958247C1DF600A519E2 /* HowToTableViewController.swift */; };
 		27C5D95B247C1E2600A519E2 /* MyHowToTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C5D95A247C1E2600A519E2 /* MyHowToTableViewController.swift */; };
+		27C5D95D247C1E8000A519E2 /* HowToDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C5D95C247C1E8000A519E2 /* HowToDetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		27C5D956247C1DB300A519E2 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		27C5D958247C1DF600A519E2 /* HowToTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToTableViewController.swift; sourceTree = "<group>"; };
 		27C5D95A247C1E2600A519E2 /* MyHowToTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHowToTableViewController.swift; sourceTree = "<group>"; };
+		27C5D95C247C1E8000A519E2 /* HowToDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToDetailsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +111,7 @@
 				27C5D956247C1DB300A519E2 /* LoginViewController.swift */,
 				27C5D958247C1DF600A519E2 /* HowToTableViewController.swift */,
 				27C5D95A247C1E2600A519E2 /* MyHowToTableViewController.swift */,
+				27C5D95C247C1E8000A519E2 /* HowToDetailsViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -188,6 +191,7 @@
 				27C5D95B247C1E2600A519E2 /* MyHowToTableViewController.swift in Sources */,
 				27C5D959247C1DF600A519E2 /* HowToTableViewController.swift in Sources */,
 				27C5D93E247C0C7F00A519E2 /* AppDelegate.swift in Sources */,
+				27C5D95D247C1E8000A519E2 /* HowToDetailsViewController.swift in Sources */,
 				27C5D940247C0C7F00A519E2 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
