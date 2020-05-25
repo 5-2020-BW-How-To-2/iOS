@@ -54,14 +54,54 @@
 		27C5D93C247C0C7F00A519E2 /* How To */ = {
 			isa = PBXGroup;
 			children = (
-				27C5D93D247C0C7F00A519E2 /* AppDelegate.swift */,
-				27C5D93F247C0C7F00A519E2 /* SceneDelegate.swift */,
-				27C5D943247C0C7F00A519E2 /* Main.storyboard */,
-				27C5D946247C0C8600A519E2 /* Assets.xcassets */,
-				27C5D948247C0C8600A519E2 /* LaunchScreen.storyboard */,
+				27C5D953247C1D2500A519E2 /* Core Data */,
+				27C5D954247C1D3100A519E2 /* Controllers */,
+				27C5D955247C1D4F00A519E2 /* View Controllers */,
+				27C5D951247C1D0300A519E2 /* Storyboards */,
+				27C5D952247C1D1600A519E2 /* Resources */,
 				27C5D94B247C0C8600A519E2 /* Info.plist */,
 			);
 			path = "How To";
+			sourceTree = "<group>";
+		};
+		27C5D951247C1D0300A519E2 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				27C5D943247C0C7F00A519E2 /* Main.storyboard */,
+				27C5D948247C0C8600A519E2 /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		27C5D952247C1D1600A519E2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				27C5D93D247C0C7F00A519E2 /* AppDelegate.swift */,
+				27C5D93F247C0C7F00A519E2 /* SceneDelegate.swift */,
+				27C5D946247C0C8600A519E2 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		27C5D953247C1D2500A519E2 /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Core Data";
+			sourceTree = "<group>";
+		};
+		27C5D954247C1D3100A519E2 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		27C5D955247C1D4F00A519E2 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "View Controllers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
