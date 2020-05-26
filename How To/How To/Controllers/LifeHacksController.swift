@@ -7,12 +7,22 @@
 //
 
 import Foundation
+import CoreData
 
 class LifeHacksController{
     
-    let baseURL = URL(string: "https://bwhowto.firebaseio.com/")!
+    //MARK: - Properties
     
+    let baseURL = URL(string: "https://bwhowto.firebaseio.com/")!
+    typealias CompletionHandler = (Result<Bool, NetworkError>) -> Void
     var token: String?
+    var lifeHacksRep: [LifeHacksRepresentation] = []
+    var searchedLifeHacks: [LifeHacksRepresentation] = []
+    
+    init() {
+        fetchLifeHacksFromServer()
+    }
+    
     
     func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void) = { _ in }) {
         let id = lifeHacks.id ?? UUID().uuidString
@@ -57,9 +67,9 @@ class LifeHacksController{
         }.resume()
     }
     
-    func createLifeHack(title: String, reason: String, numberStep: Int16, instructions: String) {
+    func createLifeHack(title: String, reason: String, numberStep: Int16, instructions: String, user: String) {
         
-        let lifeHacks = LifeHacks(title: title, reason: reason, numberSteps: numberStep, instructions: instructions)
+        let lifeHacks = LifeHacks(title: title, reason: reason, numberSteps: numberStep, instructions: instructions, user: user)
         sendToServer(lifeHacks: lifeHacks)
         do {
             try CoreDataStack.shared.mainContext.save()
@@ -70,7 +80,7 @@ class LifeHacksController{
         NotificationCenter.default.post(name: NSNotification.Name("LifeHackAdded"), object: self)
     }
     
-    func updateLifeHack(lifeHacks: LifeHacks, title: String, reason: String, numberStep: Int16, instructions: String) {
+    func updateLifeHacks(lifeHacks: LifeHacks, title: String, reason: String, numberStep: Int16, instructions: String) {
         lifeHacks.title = title
         lifeHacks.reason = reason
         lifeHacks.numberSteps = numberStep
@@ -94,4 +104,70 @@ class LifeHacksController{
         }
     }
     
+    func fetchLifeHacksFromServer(completion: @escaping CompletionHandler = { _ in }) {
+     
+        let requestURL = baseURL.appendingPathExtension("json")
+
+        URLSession.shared.dataTask(with: requestURL) { (data, _, error) in
+            if let error = error {
+                NSLog("Failed fetch with error: \(error)")
+                return completion(.failure(.otherError))
+            }
+
+            guard let data = data else {
+                NSLog("No data returned from fetch.")
+                return completion(.failure(.badData))
+            }
+
+            do {
+                let lifeHacksRepresentations = Array(try JSONDecoder().decode([String : LifeHacksRepresentation].self, from: data).values)
+                self.updateLifeHacks(with: lifeHacksRepresentations)
+                completion(.success(true))
+            } catch {
+                NSLog("Failed to decode life hack representations from server.")
+                completion(.failure(.noDecode))
+            }
+        }
+        .resume()
+    }
+    
+    private func updateLifeHacks(with representations: [LifeHacksRepresentation]){
+        let identifiersToFetch = representations.compactMap { $0.user }
+        let representationsById = Dictionary(uniqueKeysWithValues: zip(identifiersToFetch, representations))
+        var lifeHacksToCreate = representationsById
+
+        let fetchRequest: NSFetchRequest<LifeHacks> = LifeHacks.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "identifier IN %@", identifiersToFetch)
+
+        let context = CoreDataStack.shared.container.newBackgroundContext()
+
+        context.perform {
+            do {
+                let existingLifeHacks = try context.fetch(fetchRequest)
+
+                for lifeHack in existingLifeHacks {
+                    guard let id = lifeHack.id,
+                        let representation = representationsById[id] else { continue }
+                    self.update(lifeHacks: lifeHack, with: representation)
+                    lifeHacksToCreate.removeValue(forKey: id)
+                }
+
+                for representation in lifeHacksToCreate.values {
+                    LifeHacks(lifeHacksRepresentation: representation, context: context)
+                }
+
+                try context.save()
+            } catch {
+                NSLog("Failed to fetch movies \(identifiersToFetch) with errpr: \(error)")
+                return
+            }
+        }
+    }
+
+    private func update(lifeHacks: LifeHacks, with representation: LifeHacksRepresentation) {
+        lifeHacks.title = representation.title
+        lifeHacks.reason = representation.reason
+        lifeHacks.numberSteps = Int16(representation.numberSteps)
+        lifeHacks.instructions = representation.instructions
+    }
 }

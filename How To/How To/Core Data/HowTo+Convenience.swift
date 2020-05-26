@@ -42,10 +42,11 @@ extension LifeHacks {
         guard let id = id,
             let title = title,
             let reason = reason,
-            let instructions = instructions else { return nil }
+            let instructions = instructions,
+            let user = user else { return nil }
         let numberSteps = Int16()
         
-        return LifeHacksRepresentation(id: id, title: title, reason: reason, numberSteps: Int(numberSteps) , instructions: instructions)
+        return LifeHacksRepresentation(id: id, title: title, reason: reason, numberSteps: Int(numberSteps), instructions: instructions, user: user)
     }
     
     @discardableResult convenience init(id: String = UUID().uuidString,
@@ -53,6 +54,7 @@ extension LifeHacks {
                                         reason: String,
                                         numberSteps: Int16,
                                         instructions: String,
+                                        user: String,
                                         context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         self.init(context: context)
         self.title = title
@@ -60,6 +62,7 @@ extension LifeHacks {
         self.numberSteps = Int16(numberSteps)
         self.instructions = instructions
         self.id = id
+        self.user = user
     }
     
     @discardableResult convenience init?(lifeHacksRepresentation: LifeHacksRepresentation,
@@ -71,6 +74,7 @@ extension LifeHacks {
                 reason: lifeHacksRepresentation.reason,
                 numberSteps: Int16(lifeHacksRepresentation.numberSteps),
                 instructions: lifeHacksRepresentation.instructions,
+                user: lifeHacksRepresentation.user,
                 context: context)
     }
 }

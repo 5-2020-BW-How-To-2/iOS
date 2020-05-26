@@ -19,4 +19,5 @@ struct LifeHacksRepresentation: Codable {
     var reason: String
     var numberSteps: Int
     var instructions: String
+    var user: String
 }
