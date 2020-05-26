@@ -160,7 +160,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="iAE-c5-yRu" kind="show" identifier="ViewHowToSegue" trigger="accessoryAction" id="gOI-sJ-qf4"/>
+                                    <segue destination="iAE-c5-yRu" kind="show" identifier="ShowLifeHackSegue" trigger="accessoryAction" id="gOI-sJ-qf4"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

@@ -22,7 +22,9 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var submitButton: UIButton!
     
     // MARK: - Properties
-     var loginType: LoginType?
+    var loginType: LoginType?
+    var lifeHacksController = LifeHacksController()
+    var apiController = APIController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
