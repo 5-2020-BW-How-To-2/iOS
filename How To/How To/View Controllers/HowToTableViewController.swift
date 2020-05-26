@@ -32,7 +32,7 @@ class HowToTableViewController: UITableViewController {
         
         lifeHacksController.token = apiController.bearer
         lifeHacksController.fetchLifeHacksFromServer() { error in
-            guard error == error else { return }
+            guard error == nil else { return }
             DispatchQueue.main.async {
                 
                 self.fetchedResultsController = {

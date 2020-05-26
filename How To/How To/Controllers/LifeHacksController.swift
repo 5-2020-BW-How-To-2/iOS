@@ -14,7 +14,6 @@ class LifeHacksController{
     //MARK: - Properties
     
     let baseURL = URL(string: "https://bwhowto.firebaseio.com/")!
-    typealias CompletionHandler = (Result<Bool, NetworkError>) -> Void
     var token: String?
     var lifeHacksRep: [LifeHacksRepresentation] = []
     var searchedLifeHacks: [LifeHacksRepresentation] = []
@@ -39,7 +38,7 @@ class LifeHacksController{
         }
         URLSession.shared.dataTask(with: request) { _, _, error in
             if let error = error {
-                NSLog("Error Putting student to server: \(error)")
+                NSLog("Error Putting Life Hack to server: \(error)")
                 completion(error)
                 return
             }
@@ -49,7 +48,7 @@ class LifeHacksController{
     
     func deleteFromServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void) = { _ in }) {
         guard let id = lifeHacks.id else {
-            NSLog("ID is nil when trying to delete student from server")
+            NSLog("ID is nil when trying to delete Life Hack from server")
             completion(NSError())
             return
         }
@@ -59,7 +58,7 @@ class LifeHacksController{
         
         URLSession.shared.dataTask(with: request) { (_, _, error) in
             if let error = error {
-                NSLog("Error deleting student from server: \(error)")
+                NSLog("Error deleting Life Hack from server: \(error)")
                 completion(error)
                 return
             }
@@ -104,31 +103,34 @@ class LifeHacksController{
         }
     }
     
-    func fetchLifeHacksFromServer(completion: @escaping CompletionHandler = { _ in }) {
-     
+    func fetchLifeHacksFromServer(completion: @escaping ((Error?) -> Void) = { _ in }) {
         let requestURL = baseURL.appendingPathExtension("json")
 
-        URLSession.shared.dataTask(with: requestURL) { (data, _, error) in
+        URLSession.shared.dataTask(with: requestURL) { data, _, error in
             if let error = error {
-                NSLog("Failed fetch with error: \(error)")
-                return completion(.failure(.otherError))
+                NSLog("Error fetching entries from server: \(error)")
+                completion(error)
+                return
             }
 
             guard let data = data else {
-                NSLog("No data returned from fetch.")
-                return completion(.failure(.badData))
+                NSLog("No data returned from data task")
+                completion(NSError())
+                return
             }
 
             do {
-                let lifeHacksRepresentations = Array(try JSONDecoder().decode([String : LifeHacksRepresentation].self, from: data).values)
-                self.updateLifeHacks(with: lifeHacksRepresentations)
-                completion(.success(true))
+                self.lifeHacksRep = try JSONDecoder().decode([String: LifeHacksRepresentation].self, from: data).map({$0.value})
+                self.updateLifeHacks(with: self.lifeHacksRep)
             } catch {
-                NSLog("Failed to decode life hack representations from server.")
-                completion(.failure(.noDecode))
+                NSLog("Error decoding JSON data when fetching life hack: \(error)")
+                completion(error)
+                return
             }
-        }
-        .resume()
+
+            completion(nil)
+
+        }.resume()
     }
     
     private func updateLifeHacks(with representations: [LifeHacksRepresentation]){
