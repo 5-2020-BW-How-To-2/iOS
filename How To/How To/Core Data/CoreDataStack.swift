@@ -9,11 +9,12 @@
 import Foundation
 import CoreData
 
-class CoreDataUserStack {
-    static let shared = CoreDataUserStack()
+class CoreDataStack {
+    
+    static let shared = CoreDataStack()
 
     lazy var container: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "User")
+        let container = NSPersistentContainer(name: "How To")
 
         container.loadPersistentStores { _, error in
             if let error = error {
