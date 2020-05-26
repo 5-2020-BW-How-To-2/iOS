@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		27191147247D79E300CD4525 /* LifeHacksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27191146247D79E300CD4525 /* LifeHacksController.swift */; };
 		274232BD247D62AF00C0C2EC /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274232BC247D62AF00C0C2EC /* HTTPMethod.swift */; };
 		274232BF247D62D800C0C2EC /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274232BE247D62D800C0C2EC /* NetworkError.swift */; };
+		274232C1247D631400C0C2EC /* APIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274232C0247D631400C0C2EC /* APIController.swift */; };
+		27485D9D247D6EB20003AF20 /* Bearer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27485D9C247D6EB20003AF20 /* Bearer.swift */; };
 		27C5D93E247C0C7F00A519E2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C5D93D247C0C7F00A519E2 /* AppDelegate.swift */; };
 		27C5D940247C0C7F00A519E2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C5D93F247C0C7F00A519E2 /* SceneDelegate.swift */; };
 		27C5D945247C0C7F00A519E2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27C5D943247C0C7F00A519E2 /* Main.storyboard */; };
@@ -27,8 +30,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		27191146247D79E300CD4525 /* LifeHacksController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifeHacksController.swift; sourceTree = "<group>"; };
 		274232BC247D62AF00C0C2EC /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
 		274232BE247D62D800C0C2EC /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		274232C0247D631400C0C2EC /* APIController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIController.swift; sourceTree = "<group>"; };
+		27485D9C247D6EB20003AF20 /* Bearer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bearer.swift; sourceTree = "<group>"; };
 		27C5D93A247C0C7F00A519E2 /* How To.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "How To.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		27C5D93D247C0C7F00A519E2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		27C5D93F247C0C7F00A519E2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -105,6 +111,7 @@
 				27C5D946247C0C8600A519E2 /* Assets.xcassets */,
 				274232BC247D62AF00C0C2EC /* HTTPMethod.swift */,
 				274232BE247D62D800C0C2EC /* NetworkError.swift */,
+				27485D9C247D6EB20003AF20 /* Bearer.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -123,6 +130,8 @@
 		27C5D954247C1D3100A519E2 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				274232C0247D631400C0C2EC /* APIController.swift */,
+				27191146247D79E300CD4525 /* LifeHacksController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -213,6 +222,7 @@
 			files = (
 				27C5D957247C1DB300A519E2 /* LoginViewController.swift in Sources */,
 				274232BF247D62D800C0C2EC /* NetworkError.swift in Sources */,
+				27191147247D79E300CD4525 /* LifeHacksController.swift in Sources */,
 				27C5D95B247C1E2600A519E2 /* MyHowToTableViewController.swift in Sources */,
 				27C5D959247C1DF600A519E2 /* HowToTableViewController.swift in Sources */,
 				27C5D96A247C398200A519E2 /* HowTo+Convenience.swift in Sources */,
@@ -220,11 +230,13 @@
 				27C5D95F247C1EC000A519E2 /* CreateHowToViewController.swift in Sources */,
 				27C5D966247C388000A519E2 /* CoreDataStack.swift in Sources */,
 				27C5D964247C379800A519E2 /* HowTo.xcdatamodeld in Sources */,
+				27485D9D247D6EB20003AF20 /* Bearer.swift in Sources */,
 				27C5D96C247C4DC500A519E2 /* HowToRepresentation.swift in Sources */,
 				27C5D95D247C1E8000A519E2 /* HowToDetailsViewController.swift in Sources */,
 				274232BD247D62AF00C0C2EC /* HTTPMethod.swift in Sources */,
 				27C5D961247C1EF400A519E2 /* EditHowToViewController.swift in Sources */,
 				27C5D940247C0C7F00A519E2 /* SceneDelegate.swift in Sources */,
+				274232C1247D631400C0C2EC /* APIController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

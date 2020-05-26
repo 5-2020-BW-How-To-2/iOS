@@ -13,9 +13,10 @@ struct UserRepresentation: Codable {
     var password: String
 }
 
-struct EntryListRepresentation: Codable {
+struct LifeHacksRepresentation: Codable {
     var id: String?
     var title: String
-    var entry: String
-    var user: String
+    var reason: String
+    var numberSteps: Int
+    var instructions: String
 }

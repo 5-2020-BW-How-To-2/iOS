@@ -19,58 +19,58 @@ extension User {
                                   password: password)
     }
     
+    @discardableResult convenience init(username: String,
+                                        password: String,
+                                        context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
+        self.init(context: context)
+        self.username = username
+        self.password = password
+    }
+    
     @discardableResult convenience init?(userRepresentation: UserRepresentation,
-                                         context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
-
+                                         context: NSManagedObjectContext = CoreDataStack.shared.mainContext){
+        
         self.init(username: userRepresentation.username,
                   password: userRepresentation.password,
                   context: context)
     }
-    
-    convenience init(username: String,
-                     password: String,
-                     context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
-        
-        self.init(context:context)
-        self.username = username
-        self.password = password
-    }
 }
 
-extension EntryList {
+extension LifeHacks {
     
-    var entryListRepresentation: EntryListRepresentation? {
-        guard let entry = entry,
+    var lifeHacksRepresentation: LifeHacksRepresentation? {
+        guard let id = id,
             let title = title,
-            let id = id,
-            let user = user else {return nil}
+            let reason = reason,
+            let instructions = instructions else { return nil }
+        let numberSteps = Int16()
         
-        return EntryListRepresentation(id: id, title: title, entry: entry, user: user)
+        return LifeHacksRepresentation(id: id, title: title, reason: reason, numberSteps: Int(numberSteps) , instructions: instructions)
     }
     
-    @discardableResult convenience init?(entryListRepresentation: EntryListRepresentation,
-                                         context: NSManagedObjectContext = CoreDataStack.shared.mainContext){
-        
-        guard let id = entryListRepresentation.id else {return nil}
-        
-        self.init(entry: entryListRepresentation.entry,
-                  title: entryListRepresentation.title,
-                  user: entryListRepresentation.user,
-                  id: id,
-                  context: context)
-    }
-    
-    convenience init(entry: String,
-                     title: String,
-                     user: String,
-                     id: String = UUID().uuidString,
-                     context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
-        
+    @discardableResult convenience init(id: String = UUID().uuidString,
+                                        title: String,
+                                        reason: String,
+                                        numberSteps: Int16,
+                                        instructions: String,
+                                        context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         self.init(context: context)
-        self.entry = entry
         self.title = title
-        self.user = user
+        self.reason = reason
+        self.numberSteps = Int16(numberSteps)
+        self.instructions = instructions
         self.id = id
     }
-                     
+    
+    @discardableResult convenience init?(lifeHacksRepresentation: LifeHacksRepresentation,
+                                         context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
+        
+      guard let id = lifeHacksRepresentation.id else {return nil}
+      self.init(id: id,
+                title: lifeHacksRepresentation.title,
+                reason: lifeHacksRepresentation.reason,
+                numberSteps: Int16(lifeHacksRepresentation.numberSteps),
+                instructions: lifeHacksRepresentation.instructions,
+                context: context)
+    }
 }
