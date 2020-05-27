@@ -9,72 +9,56 @@
 import Foundation
 import CoreData
 
-extension User {
-    
-    var userRepresentation: UserRepresentation? {
-        guard let username = username,
-            let password = password else { return nil }
-        
-        return UserRepresentation(username: username,
-                                  password: password)
-    }
-    
-    @discardableResult convenience init(username: String,
-                                        password: String,
-                                        context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
-        self.init(context: context)
-        self.username = username
-        self.password = password
-    }
-    
-    @discardableResult convenience init?(userRepresentation: UserRepresentation,
-                                         context: NSManagedObjectContext = CoreDataStack.shared.mainContext){
-        
-        self.init(username: userRepresentation.username,
-                  password: userRepresentation.password,
-                  context: context)
-    }
-}
-
 extension LifeHacks {
     
     var lifeHacksRepresentation: LifeHacksRepresentation? {
-        guard let id = id,
-            let title = title,
-            let reason = reason,
-            let instructions = instructions,
-            let user = user else { return nil }
-        let numberSteps = Int16()
+        guard let title = title,
+            let lifeHackDescription = lifeHackDescription,
+            let materials = materials,
+            let video = video,
+            let instructions = instructions else {return nil }
         
-        return LifeHacksRepresentation(id: id, title: title, reason: reason, numberSteps: Int(numberSteps), instructions: instructions, user: user)
+        return LifeHacksRepresentation(title: title,
+                                       lifeHackDescription: lifeHackDescription,
+                                       materials: materials,
+                                       instructions: instructions,
+                                       id: Int16(id),
+                                       userID: Int16(userID),
+                                       video: video)
     }
     
-    @discardableResult convenience init(id: String = UUID().uuidString,
-                                        title: String,
-                                        reason: String,
-                                        numberSteps: Int16,
+    @discardableResult convenience init(title: String,
+                                        lifeHackDescription: String,
+                                        materials: String,
                                         instructions: String,
-                                        user: String,
+                                        id: Int16,
+                                        userID: Int16,
+                                        video: String,
                                         context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
+        
         self.init(context: context)
         self.title = title
-        self.reason = reason
-        self.numberSteps = Int16(numberSteps)
-        self.instructions = instructions
-        self.id = id
-        self.user = user
+        self.lifeHackDescription = lifeHackDescription
+        self.materials = materials
+        self.id = Int16(id)
+        self.userID = Int16(userID)
+        self.video = video
     }
     
     @discardableResult convenience init?(lifeHacksRepresentation: LifeHacksRepresentation,
                                          context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         
-      guard let id = lifeHacksRepresentation.id else {return nil}
-      self.init(id: id,
-                title: lifeHacksRepresentation.title,
-                reason: lifeHacksRepresentation.reason,
-                numberSteps: Int16(lifeHacksRepresentation.numberSteps),
-                instructions: lifeHacksRepresentation.instructions,
-                user: lifeHacksRepresentation.user,
-                context: context)
+        
+        guard let video = lifeHacksRepresentation.video,
+            let instructions = lifeHacksRepresentation.instructions,
+            let materials = lifeHacksRepresentation.materials else { return nil }
+        
+        self.init(title: lifeHacksRepresentation.title,
+                  lifeHackDescription: lifeHacksRepresentation.lifeHackDescription,
+                  materials: materials,
+                  instructions: instructions,
+                  id: lifeHacksRepresentation.id,
+                  userID: lifeHacksRepresentation.userID,
+                  video: video)
     }
 }

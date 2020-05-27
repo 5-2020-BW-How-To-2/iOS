@@ -17,7 +17,7 @@ class HowToTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        lifeHacksController.fetchLifeHacksFromServer()
+       lifeHacksController.fetchLifeHacksFromServer()
     }
     
     override func viewDidAppear(_ animated: Bool) {

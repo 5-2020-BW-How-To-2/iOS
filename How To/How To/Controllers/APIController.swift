@@ -11,13 +11,13 @@ import UIKit
 
 class APIController{
     
-    private let baseURL = URL(string: "http://howtobuildweek.herokuapp.com/")!
+    private let baseURL = URL(string: "http://clhowto.herokuapp.com/")!
     var bearer: String?
     
     // Create a function for Sign In
     func signIn(with user: User, completion: @escaping (String?, Error?) -> Void) {
         
-        let signInURL = baseURL.appendingPathComponent("/api/login")
+        let signInURL = baseURL.appendingPathComponent("/api/auth/login")
         
         var request = URLRequest(url: signInURL)
         request.httpMethod = HTTPMethod.post.rawValue
@@ -51,9 +51,9 @@ class APIController{
             }
             do {
                 let result = try JSONDecoder().decode(Bearer.self, from: data)
-                self.bearer = result.username
+                self.bearer = result.token
                 DispatchQueue.main.async {
-                    completion(result.username, nil)
+                    completion(result.token, nil)
                 }
                 
             } catch {
@@ -63,7 +63,7 @@ class APIController{
     }
     
     func signUp(with user: User, completion: @escaping (Error?) -> Void) {
-        let signUpURL = baseURL.appendingPathComponent("ap/register")
+        let signUpURL = baseURL.appendingPathComponent("/api/register")
         
         var request = URLRequest(url: signUpURL)
         request.httpMethod = HTTPMethod.post.rawValue

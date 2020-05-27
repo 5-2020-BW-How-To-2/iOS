@@ -8,16 +8,13 @@
 
 import Foundation
 
-struct UserRepresentation: Codable {
-    var username: String
-    var password: String
-}
 
 struct LifeHacksRepresentation: Codable {
-    var id: String?
     var title: String
-    var reason: String
-    var numberSteps: Int
-    var instructions: String
-    var user: String
+    var lifeHackDescription: String
+    var materials: String?
+    var instructions: String?
+    var id: Int16
+    var userID: Int16
+    var video: String?
 }

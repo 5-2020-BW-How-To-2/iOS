@@ -9,5 +9,5 @@
 import Foundation
 
 class Bearer: Codable {
-    var username: String
+    var token: String
 }
