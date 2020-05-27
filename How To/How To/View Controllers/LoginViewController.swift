@@ -50,7 +50,7 @@ class LoginViewController: UIViewController {
     @IBAction func submitButtonTapped(_ sender: UIButton) {
         guard let apiController = apiController else {return}
         if let username = usernameTextField.text, !username.isEmpty, let password = passwordTextField.text, !password.isEmpty {
-            let user = User(username: username, password: password)
+            let user = User()
             if loginType == .signUp {
                 apiController.signUp(with: user) {error in
                     if let error = error {
@@ -84,6 +84,5 @@ class LoginViewController: UIViewController {
                 }
             }
         }
-    }
-
+}
 }

@@ -16,14 +16,15 @@ extension LifeHacks {
             let lifeHackDescription = lifeHackDescription,
             let materials = materials,
             let video = video,
-            let instructions = instructions else {return nil }
+            let instructions = instructions,
+            let userID = userID else {return nil }
         
         return LifeHacksRepresentation(title: title,
                                        lifeHackDescription: lifeHackDescription,
                                        materials: materials,
                                        instructions: instructions,
                                        id: Int16(id),
-                                       userID: Int16(userID),
+                                       userID: userID,
                                        video: video)
     }
     
@@ -32,7 +33,7 @@ extension LifeHacks {
                                         materials: String,
                                         instructions: String,
                                         id: Int16,
-                                        userID: Int16,
+                                        userID: String,
                                         video: String,
                                         context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         
@@ -41,7 +42,7 @@ extension LifeHacks {
         self.lifeHackDescription = lifeHackDescription
         self.materials = materials
         self.id = Int16(id)
-        self.userID = Int16(userID)
+        self.userID = userID
         self.video = video
     }
     

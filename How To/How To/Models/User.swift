@@ -8,9 +8,9 @@
 
 import Foundation
 
-class User: Codable {
-    var id: Int16
-    var username: String
-    var password: String
+class User {
+    var id: Int16 = 0
+    var username: String = ""
+    var password: String = ""
 }
 

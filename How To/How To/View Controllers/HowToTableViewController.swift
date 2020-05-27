@@ -30,7 +30,7 @@ class HowToTableViewController: UITableViewController {
             return
         }
         
-        lifeHacksController.token = apiController.bearer
+        lifeHacksController.bearer = apiController.bearer
         lifeHacksController.fetchLifeHacksFromServer() { error in
             guard error == nil else { return }
             DispatchQueue.main.async {
@@ -67,7 +67,7 @@ class HowToTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HowToCell", for: indexPath)
         cell.textLabel?.text = fetchedResultsController?.fetchedObjects?[indexPath.row].title
-        cell.detailTextLabel?.text = fetchedResultsController?.fetchedObjects?[indexPath.row].user
+     //   cell.detailTextLabel?.text = fetchedResultsController?.fetchedObjects?[indexPath.row].
         return cell
     }
 

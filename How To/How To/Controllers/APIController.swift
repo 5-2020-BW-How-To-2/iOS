@@ -24,8 +24,8 @@ class APIController{
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let jsonEncoder = JSONEncoder()
-        let signInRep = ["username": "\(user.userRepresentation!.username)",
-            "password": "\(user.userRepresentation!.password)"]
+        let signInRep = ["username": "\(user.username)",
+            "password": "\(user.password)"]
         do {
             let jsonData = try jsonEncoder.encode(signInRep)
             request.httpBody = jsonData
@@ -71,8 +71,8 @@ class APIController{
         
         let jsonEncoder = JSONEncoder()
         
-        let signUpRep = ["username": "\(user.userRepresentation!.username)",
-            "password": "\(user.userRepresentation!.password)"]
+        let signUpRep = ["username": "\(user.username)",
+            "password": "\(user.password)"]
         
         do {
             let jsonData = try jsonEncoder.encode(signUpRep)

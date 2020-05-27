@@ -15,6 +15,6 @@ struct LifeHacksRepresentation: Codable {
     var materials: String?
     var instructions: String?
     var id: Int16
-    var userID: Int16
+    var userID: String
     var video: String?
 }
