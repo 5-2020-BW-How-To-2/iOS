@@ -12,9 +12,8 @@ import CoreData
 class LifeHacksController{
     
     //MARK: - Properties
-
-    let baseURL = URL(string: "https://bwhowto.firebaseio.com/")!
-    var lifeHacksRep: [LifeHacksRepresentation] = []
+    var apiController = APIController()
+    var lifeHacksRep: [LifeHacksRepresentation]?
     var bearer: String?
 
     init() {
@@ -24,7 +23,7 @@ class LifeHacksController{
 
     func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void) = { _ in }) {
         let userID = lifeHacks.userID ?? UUID().uuidString
-        let requestURL = baseURL.appendingPathComponent(userID).appendingPathExtension("json")
+        let requestURL = apiController.baseURL.appendingPathExtension("api/posts").appendingPathComponent(userID)
         var request = URLRequest(url: requestURL)
         request.httpMethod = "PUT"
 
@@ -51,7 +50,7 @@ class LifeHacksController{
             completion(NSError())
             return
         }
-        let requestURL = baseURL.appendingPathComponent(userID).appendingPathExtension("json")
+        let requestURL = apiController.baseURL.appendingPathExtension("api/posts/").appendingPathComponent(userID)
         var request = URLRequest(url: requestURL)
         request.httpMethod = "DELETE"
 
@@ -104,9 +103,8 @@ class LifeHacksController{
     }
 
     func fetchLifeHacksFromServer(completion: @escaping ((Error?) -> Void) = { _ in }) {
-        let requestURL = baseURL.appendingPathExtension("json")
-
-        URLSession.shared.dataTask(with: requestURL) { data, _, error in
+        
+        URLSession.shared.dataTask(with: apiController.baseURL) { data, _, error in
             if let error = error {
                 NSLog("Error fetching entries from server: \(error)")
                 completion(error)
@@ -120,8 +118,8 @@ class LifeHacksController{
             }
 
             do {
-                self.lifeHacksRep = try (JSONDecoder().decode([LifeHacksRepresentation].self, from: data))
-                self.updateLifeHacks(with: self.lifeHacksRep)
+                self.lifeHacksRep = try JSONDecoder().decode([LifeHacksRepresentation].self, from: data)
+                self.updateLifeHacks(with: self.lifeHacksRep ?? [])
             } catch {
                 NSLog("Error decoding JSON data when fetching life hack: \(error)")
                 completion(error)
@@ -134,7 +132,7 @@ class LifeHacksController{
     }
 
     private func updateLifeHacks(with representations: [LifeHacksRepresentation]){
-        let identifiersToFetch = representations.compactMap { $0.userID }
+        let identifiersToFetch = representations.compactMap { $0.id }
         let representationsById = Dictionary(uniqueKeysWithValues: zip(identifiersToFetch, representations))
         var lifeHacksToCreate = representationsById
 
@@ -148,10 +146,9 @@ class LifeHacksController{
                 let existingLifeHacks = try context.fetch(fetchRequest)
 
                 for lifeHack in existingLifeHacks {
-                    guard let userID = lifeHack.userID,
-                        let representation = representationsById[userID] else { continue }
-                    self.update(lifeHacks: lifeHack, with: representation)
-                    lifeHacksToCreate.removeValue(forKey: userID)
+                    let representation = representationsById[lifeHack.id]
+                    self.update(lifeHacks: lifeHack, with: representation!)
+                    lifeHacksToCreate.removeValue(forKey: lifeHack.id)
                 }
 
                 for representation in lifeHacksToCreate.values {

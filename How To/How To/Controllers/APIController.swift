@@ -11,17 +11,16 @@ import UIKit
 
 class APIController{
     
-    private let baseURL = URL(string: "http://clhowto.herokuapp.com/")!
+    let baseURL = URL(string: "http://clhowto.herokuapp.com/")!
     var bearer: String?
     
     // Create a function for Sign In
     func signIn(with user: User, completion: @escaping (String?, Error?) -> Void) {
         
-        let signInURL = baseURL.appendingPathComponent("/api/auth/login")
+        let signInURL = baseURL.appendingPathComponent("api/auth/login")
         
         var request = URLRequest(url: signInURL)
         request.httpMethod = HTTPMethod.post.rawValue
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let jsonEncoder = JSONEncoder()
         let signInRep = ["username": "\(user.username)",
@@ -63,7 +62,7 @@ class APIController{
     }
     
     func signUp(with user: User, completion: @escaping (Error?) -> Void) {
-        let signUpURL = baseURL.appendingPathComponent("/api/register")
+        let signUpURL = baseURL.appendingPathComponent("api/auth/register")
         
         var request = URLRequest(url: signUpURL)
         request.httpMethod = HTTPMethod.post.rawValue

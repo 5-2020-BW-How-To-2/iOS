@@ -17,4 +17,10 @@ struct LifeHacksRepresentation: Codable {
     var id: Int16
     var userID: String
     var video: String?
+    
+    
+    enum CodingKeys: String, CodingKey {
+        case lifeHackDescription = "description"
+        case title, materials, userID, video, id
+    }
 }
