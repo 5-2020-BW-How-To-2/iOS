@@ -155,7 +155,7 @@ func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void)
         }.resume()
     }
     
-    func createLifeHack(title: String, lifeHackDescription: String, materials: String?, instructions: String?, id: Int16, userID: String, video: String?) {
+    func createLifeHack(title: String, lifeHackDescription: String, materials: String?, instructions: String?, id: Int16?, userID: String, video: String?) {
         
         let lifeHacks = LifeHacks(title: title, lifeHackDescription: lifeHackDescription, materials: materials ?? " ", instructions: instructions ?? " ", id: Int16(id), userID: userID, video: video ?? " ")
         sendToServer(lifeHacks: lifeHacks)

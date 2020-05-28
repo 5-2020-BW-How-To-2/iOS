@@ -23,7 +23,7 @@ extension LifeHacks {
                                        lifeHackDescription: lifeHackDescription,
                                        materials: materials,
                                        instructions: instructions,
-                                       id: Int16(id),
+                                       id: id,
                                        userID: userID,
                                        video: video)
     }
@@ -52,13 +52,15 @@ extension LifeHacks {
         
         guard let video = lifeHacksRepresentation.video,
             let instructions = lifeHacksRepresentation.instructions,
-            let materials = lifeHacksRepresentation.materials else { return nil }
+            let materials = lifeHacksRepresentation.materials,
+            let id = lifeHacksRepresentation.id else { return nil }
+        
         
         self.init(title: lifeHacksRepresentation.title,
                   lifeHackDescription: lifeHacksRepresentation.lifeHackDescription,
                   materials: materials,
                   instructions: instructions,
-                  id: lifeHacksRepresentation.id,
+                  id: id,
                   userID: lifeHacksRepresentation.userID,
                   video: video)
     }

@@ -75,11 +75,11 @@ class HowToTableViewController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
-          //  case "ShowLifeHackSegue":
-          //  guard let showLifeHackVC = segue.destination as? HowToDetailsViewController,
-           //     let index = tableView.indexPathForSelectedRow else {return}
-          //  showLifeHackVC.lifeHacksController = lifeHacksController
-          //  showLifeHackVC.title = fetchedResultsController?.fetchedObjects?[index.row]
+            case "ShowLifeHackSegue":
+            guard let showLifeHackVC = segue.destination as? HowToDetailsViewController,
+                let index = tableView.indexPathForSelectedRow else {return}
+            showLifeHackVC.lifeHacksController = lifeHacksController
+            showLifeHackVC.title = fetchedResultsController?.fetchedObjects?[index.row]
             case "LoginModalSegue":
                 guard let loginVC = segue.destination as? LoginViewController else {return}
                 loginVC.apiController = apiController
