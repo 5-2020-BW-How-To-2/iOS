@@ -16,8 +16,7 @@ extension LifeHacks {
             let lifeHackDescription = lifeHackDescription,
             let materials = materials,
             let video = video,
-            let instructions = instructions,
-            let userID = userID else {return nil }
+            let instructions = instructions else {return nil }
         
         return LifeHacksRepresentation(title: title,
                                        lifeHackDescription: lifeHackDescription,
@@ -32,8 +31,8 @@ extension LifeHacks {
                                         lifeHackDescription: String,
                                         materials: String,
                                         instructions: String,
-                                        id: Int16,
-                                        userID: String,
+                                        id: Int32,
+                                        userID: Int32,
                                         video: String,
                                         context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         
@@ -41,7 +40,7 @@ extension LifeHacks {
         self.title = title
         self.lifeHackDescription = lifeHackDescription
         self.materials = materials
-        self.id = Int16(id)
+        self.id = id
         self.userID = userID
         self.video = video
     }
@@ -64,4 +63,20 @@ extension LifeHacks {
                   userID: lifeHacksRepresentation.userID,
                   video: video)
     }
+    
+    @discardableResult convenience init(title: String,
+                                        lifeHackDescription: String,
+                                        materials: String,
+                                        instructions: String,
+                                        userID: Int32,
+                                        video: String,
+                                        context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
+        
+        self.init(context: context)
+        self.title = title
+        self.lifeHackDescription = lifeHackDescription
+        self.materials = materials
+        self.userID = userID
+        self.video = video
+}
 }

@@ -14,7 +14,7 @@ class CreateHowToViewController: UIViewController {
     //MARK: Properties
     
     var apiController: APIController?
-    var userID: String?
+    var userID: Int32 = Int32(APIController.sharedInstance.userID ?? 0)
     
     //MARK: Outlets
     @IBOutlet weak var titleTextField: UITextField!
@@ -44,7 +44,7 @@ class CreateHowToViewController: UIViewController {
             let instructions = instructionsTextView.text,
             !instructions.isEmpty else { return }
         
-        apiController?.createLifeHack(title: title, lifeHackDescription: description, materials: materials, instructions: instructions, id: Int16(id) ?? " ", userID: userID ?? " ", video: video)
+        apiController?.createLifeHack(title: title, lifeHackDescription: description, materials: materials, instructions: instructions, userID: userID, video: video)
     }
     
     

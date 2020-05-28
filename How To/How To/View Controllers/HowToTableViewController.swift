@@ -66,7 +66,7 @@ class HowToTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HowToCell", for: indexPath)
         cell.textLabel?.text = fetchedResultsController?.fetchedObjects?[indexPath.row].title
-     //   cell.detailTextLabel?.text = fetchedResultsController?.fetchedObjects?[indexPath.row].
+        cell.detailTextLabel?.text = fetchedResultsController?.fetchedObjects?[indexPath.row].lifeHackDescription
         return cell
     }
 
@@ -78,8 +78,8 @@ class HowToTableViewController: UITableViewController {
             case "ShowLifeHackSegue":
             guard let showLifeHackVC = segue.destination as? HowToDetailsViewController,
                 let index = tableView.indexPathForSelectedRow else {return}
-            showLifeHackVC.lifeHacksController = lifeHacksController
-            showLifeHackVC.title = fetchedResultsController?.fetchedObjects?[index.row]
+            showLifeHackVC.apiController = apiController
+            showLifeHackVC.title = fetchedResultsController?.fetchedObjects?[index.row].title
             case "LoginModalSegue":
                 guard let loginVC = segue.destination as? LoginViewController else {return}
                 loginVC.apiController = apiController

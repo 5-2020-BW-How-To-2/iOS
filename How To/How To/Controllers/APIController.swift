@@ -18,7 +18,7 @@ class APIController{
     private lazy var signUpURL = baseURL.appendingPathComponent("api/auth/register")
     static var bearer: Bearer?
     var lifeHacksRep: [LifeHacksRepresentation]?
-    // var userID: User?
+    var userID: Int16?
     
     private lazy var jsonEncoder: JSONEncoder = {
         let encoder = JSONEncoder()
@@ -28,10 +28,7 @@ class APIController{
     
     private lazy var jsonDecoder = JSONDecoder()
     
-    init() {
-        fetchLifeHacksFromServer()
-    }
-    
+    // User logs in
     func signIn(with user: User, completion: @escaping (Error?) -> ()) {
        
         var request = URLRequest(url: signInURL)
@@ -78,7 +75,7 @@ class APIController{
             }
         }.resume()
     }
-    
+    //User signs up
     func signUp(with user: User, completion: @escaping (Error?) -> (Void)) {
        
         var request = URLRequest(url: signUpURL)
@@ -111,10 +108,10 @@ class APIController{
             }
         }.resume()
     }
-
+// Send Life Hacks by user
 func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void) = { _ in }) {
-    let userID = lifeHacks.userID ?? UUID().uuidString
-    let requestURL = baseURL.appendingPathExtension("api/posts").appendingPathComponent(userID)
+
+    let requestURL = baseURL.appendingPathComponent("api/posts")
     var request = URLRequest(url: requestURL)
     request.httpMethod = "PUT"
     
@@ -134,14 +131,10 @@ func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void)
         completion(nil)
     }.resume()
 }
-    
+    // Delete Life Hacks by user
     func deleteFromServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void) = { _ in }) {
-        guard let userID = lifeHacks.userID else {
-            NSLog("ID is nil when trying to delete Life Hack from server")
-            completion(NSError())
-            return
-        }
-        let requestURL = baseURL.appendingPathExtension("api/posts/").appendingPathComponent(userID)
+        
+        let requestURL = baseURL.appendingPathComponent("api/posts/").appendingPathExtension(String(lifeHacks.userID))
         var request = URLRequest(url: requestURL)
         request.httpMethod = "DELETE"
         
@@ -154,10 +147,14 @@ func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void)
             completion(nil)
         }.resume()
     }
-    
-    func createLifeHack(title: String, lifeHackDescription: String, materials: String?, instructions: String?, id: Int16?, userID: String, video: String?) {
+    // User Creates a Life Hack
+    func createLifeHack(title: String, lifeHackDescription: String, materials: String?, instructions: String?, userID: Int32, video: String?) {
         
-        let lifeHacks = LifeHacks(title: title, lifeHackDescription: lifeHackDescription, materials: materials ?? " ", instructions: instructions ?? " ", id: Int16(id), userID: userID, video: video ?? " ")
+        guard let materials = materials,
+            let instructions = instructions,
+            let video = video else { return }
+        
+        let lifeHacks = LifeHacks(title: title, lifeHackDescription: lifeHackDescription, materials: materials, instructions: instructions, userID: userID, video: video)
         sendToServer(lifeHacks: lifeHacks)
         do {
             try CoreDataStack.shared.mainContext.save()
@@ -167,7 +164,7 @@ func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void)
         }
         NotificationCenter.default.post(name: NSNotification.Name("LifeHackAdded"), object: self)
     }
-    
+    // User updates a life hack
     func updateLifeHacks(lifeHacks: LifeHacks, title: String, lifeHackDescription: String, materials: String?, instructions: String, video: String?) {
         lifeHacks.title = title
         lifeHacks.lifeHackDescription = lifeHackDescription
@@ -182,7 +179,7 @@ func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void)
         }
         NotificationCenter.default.post(name: NSNotification.Name("LifeHackChanged"), object: self)
     }
-    
+// Delete from Core Data
     func delete(lifeHacks: LifeHacks) {
         CoreDataStack.shared.mainContext.delete(lifeHacks)
         do {
@@ -192,10 +189,14 @@ func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void)
             NSLog("Delete life hack failed")
         }
     }
-    
+    // Fetches all Life Hacks
     func fetchLifeHacksFromServer(completion: @escaping ((Error?) -> Void) = { _ in }) {
         
-        URLSession.shared.dataTask(with: baseURL) { data, _, error in
+        let requestURL = baseURL.appendingPathComponent("api/posts")
+        var request = URLRequest(url: requestURL)
+        request.httpMethod = "GET"
+        
+        URLSession.shared.dataTask(with: request) { data, _, error in
             if let error = error {
                 NSLog("Error fetching entries from server: \(error)")
                 completion(error)
@@ -209,10 +210,46 @@ func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void)
             }
             
             do {
-                self.lifeHacksRep = try JSONDecoder().decode([LifeHacksRepresentation].self, from: data)
-                let jsonString = String.init(data: data, encoding: .utf8)
-                print(jsonString!)
-                self.updateLifeHacks(with: self.lifeHacksRep ?? [])
+                let lifeHacksRepresentations = try JSONDecoder().decode([LifeHacksRepresentation].self, from: data)
+                let jsonString = String.init(data: data, encoding: .utf8)!
+                print(jsonString)
+                self.updateLifeHacks(with: lifeHacksRepresentations)
+            } catch {
+                NSLog("Error decoding JSON data when fetching life hack: \(error)")
+                completion(error)
+                return
+            }
+            
+            completion(nil)
+            
+        }.resume()
+    }
+    
+    //Fetch Life Hacks by user id
+    func fetchMyLifeHacksFromServer(completion: @escaping ((Error?) -> Void) = { _ in }) {
+        let lifeHacks = LifeHacks()
+        let requestURL = baseURL.appendingPathComponent("api/posts/").appendingPathExtension(String(lifeHacks.userID))
+        var request = URLRequest(url: requestURL)
+        request.httpMethod = "GET"
+        
+        URLSession.shared.dataTask(with: request) { data, _, error in
+            if let error = error {
+                NSLog("Error fetching entries from server: \(error)")
+                completion(error)
+                return
+            }
+            
+            guard let data = data else {
+                NSLog("No data returned from data task")
+                completion(NSError())
+                return
+            }
+            
+            do {
+                let lifeHacksRepresentations = try JSONDecoder().decode([LifeHacksRepresentation].self, from: data)
+                let jsonString = String.init(data: data, encoding: .utf8)!
+                print(jsonString)
+                self.updateLifeHacks(with: lifeHacksRepresentations)
             } catch {
                 NSLog("Error decoding JSON data when fetching life hack: \(error)")
                 completion(error)
