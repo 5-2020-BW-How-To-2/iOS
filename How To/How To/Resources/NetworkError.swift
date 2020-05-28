@@ -10,10 +10,6 @@ import Foundation
 import UIKit
 
 enum NetworkError: Error {
-    case badUrl
-    case noAuth
-    case badAuth
-    case otherError
-    case badData
-    case noDecode
+    case badUrl, noAuth, badAuth, otherError, badData,
+    noDecode, failedSignUp, failedSignIn, noData
 }

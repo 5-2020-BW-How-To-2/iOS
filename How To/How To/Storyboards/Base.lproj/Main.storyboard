@@ -288,7 +288,7 @@
                                     <segment title="Sign Up"/>
                                 </segments>
                                 <connections>
-                                    <action selector="loginTypeChanged:" destination="aES-CD-Mor" eventType="valueChanged" id="ahP-q2-HSx"/>
+                                    <action selector="loginTypeChanged:" destination="aES-CD-Mor" eventType="valueChanged" id="kyP-xP-W3Z"/>
                                 </connections>
                             </segmentedControl>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="i2Q-l7-sp7">
@@ -309,7 +309,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BHD-so-2S4">
                                 <rect key="frame" x="40" y="247" width="334" height="30"/>
                                 <connections>
-                                    <action selector="submitButtonTapped:" destination="aES-CD-Mor" eventType="touchUpInside" id="2AX-Lb-tfv"/>
+                                    <action selector="submitButtonTapped:" destination="aES-CD-Mor" eventType="touchUpInside" id="91b-U5-EfO"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -327,10 +327,10 @@
                         <viewLayoutGuide key="safeArea" id="J0T-PP-zlt"/>
                     </view>
                     <connections>
-                        <outlet property="loginTypeSegmentedControl" destination="j5m-i7-pWi" id="OjZ-I1-TKG"/>
-                        <outlet property="passwordTextField" destination="N0b-7l-h4P" id="JTv-dT-D3C"/>
-                        <outlet property="submitButton" destination="BHD-so-2S4" id="3N5-7n-CsG"/>
-                        <outlet property="usernameTextField" destination="9VD-5Q-hPC" id="2FW-AF-3Jn"/>
+                        <outlet property="loginTypeSegmentedControl" destination="j5m-i7-pWi" id="1Zu-82-ati"/>
+                        <outlet property="passwordTextField" destination="N0b-7l-h4P" id="H4z-ZT-TgP"/>
+                        <outlet property="submitButton" destination="BHD-so-2S4" id="9Wd-3M-9u4"/>
+                        <outlet property="usernameTextField" destination="9VD-5Q-hPC" id="CbK-e5-qZE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d3L-H8-wHF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

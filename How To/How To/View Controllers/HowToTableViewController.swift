@@ -12,33 +12,32 @@ import CoreData
 class HowToTableViewController: UITableViewController {
     
     var apiController = APIController()
-    var lifeHacksController = LifeHacksController()
     var fetchedResultsController: NSFetchedResultsController<LifeHacks>?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-       lifeHacksController.fetchLifeHacksFromServer()
+       apiController.fetchLifeHacksFromServer()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         // transition to login view if conditions require
-        let bearer = apiController.bearer
+        let bearer = APIController.bearer
         guard bearer != nil else {
             performSegue(withIdentifier: "LoginModalSegue", sender: self)
             return
         }
         
-        lifeHacksController.bearer = apiController.bearer
-        lifeHacksController.fetchLifeHacksFromServer() { error in
+        APIController.bearer = APIController.bearer
+        apiController.fetchLifeHacksFromServer() { error in
             guard error == nil else { return }
             DispatchQueue.main.async {
                 
                 self.fetchedResultsController = {
                     let fetchRequest: NSFetchRequest<LifeHacks> = LifeHacks.fetchRequest()
                     fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-                    fetchRequest.predicate = NSPredicate(format:"user == %@", bearer!)
+                    fetchRequest.predicate = NSPredicate(format:"user == %@", bearer! as! CVarArg)
                     let context = CoreDataStack.shared.mainContext
                     let frc = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                          managedObjectContext: context,
@@ -83,7 +82,6 @@ class HowToTableViewController: UITableViewController {
           //  showLifeHackVC.title = fetchedResultsController?.fetchedObjects?[index.row]
             case "LoginModalSegue":
                 guard let loginVC = segue.destination as? LoginViewController else {return}
-                loginVC.lifeHacksController = lifeHacksController
                 loginVC.apiController = apiController
             default:
                 break

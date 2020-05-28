@@ -14,7 +14,7 @@ class How_ToTests: XCTestCase {
     
     func testSignUp() {
         let login = APIController()
-        let user = User(username: "Lambda", password: "12345")
+        let user = User()
 
         let expectation = self.expectation(description: "Waiting for Sign In")
         login.signUp(with: user) { error in
