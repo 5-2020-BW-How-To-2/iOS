@@ -12,11 +12,13 @@ import CoreData
 
 class APIController{
     
+    static let sharedInstance = APIController()
     private let baseURL = URL(string: "https://clhowto.herokuapp.com/")!
     private lazy var signInURL = baseURL.appendingPathComponent("api/auth/login")
     private lazy var signUpURL = baseURL.appendingPathComponent("api/auth/register")
     static var bearer: Bearer?
     var lifeHacksRep: [LifeHacksRepresentation]?
+    // var userID: User?
     
     private lazy var jsonEncoder: JSONEncoder = {
         let encoder = JSONEncoder()
@@ -30,109 +32,108 @@ class APIController{
         fetchLifeHacksFromServer()
     }
     
-    // Create a function for Sign In
-    func signIn(with user: User, completion: @escaping (String?, Error?) -> Void) {
-        
+    func signIn(with user: User, completion: @escaping (Error?) -> ()) {
+       
         var request = URLRequest(url: signInURL)
         request.httpMethod = HTTPMethod.post.rawValue
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
+        let jsonEncoder = JSONEncoder()
         do {
             let jsonData = try jsonEncoder.encode(user)
             request.httpBody = jsonData
-            
-            URLSession.shared.dataTask(with: request) { data, response, error in
-                if let error = error{
-                    print("Sign up failed with error: \(error.localizedDescription)")
-                    completion(nil, error)
-                    return
-                }
-                
-                guard let response = response as? HTTPURLResponse,
-                    response.statusCode == 200
-                    else {
-                        print("Sign up was unsuccessful")
-                        completion(nil, error)
-                        return
-                }
-                guard let data = data else {
-                    print("Data was not received")
-                    completion(nil, error)
-                    return
-                }
-                do {
-                    Self.bearer = try self.jsonDecoder.decode(Bearer.self, from: data)
-                    completion(nil, error)
-                } catch {
-                    print("Error decoding bearer: \(error.localizedDescription)")
-                    completion(nil, error)
-                }
-            }
-            .resume()
+            let jsonString = String.init(data: jsonData, encoding: .utf8)
+            print(jsonString!)
         } catch {
-            print("Error encoding user: \(error.localizedDescription)")
-            completion(nil, error)
+            print("Error encoding user object \(error)")
+            completion(error)
+            return
         }
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if let error = error {
+                completion(error)
+                return
+            }
+            if let response = response as? HTTPURLResponse, response.statusCode != 200 {
+                completion(NSError(domain: "", code: response.statusCode, userInfo: nil))
+                return
+            }
+            guard let data = data else {
+                completion(NSError())
+                return
+            }
+            let decoder = JSONDecoder()
+            do {
+                APIController.self.bearer = try decoder.decode(Bearer.self, from: data)
+                //self.userID = try decoder.decode(user.id.self, from: data)
+               // print(self.userID!)
+                print(APIController.self.bearer!)
+            } catch {
+                print("Error decoding bearer token \(error)")
+                completion(error)
+                return
+            }
+            DispatchQueue.main.async {
+                completion(nil)
+            }
+        }.resume()
     }
     
-    func signUp(with user: User, completion: @escaping (Error?) -> Void) {
-        
+    func signUp(with user: User, completion: @escaping (Error?) -> (Void)) {
+       
         var request = URLRequest(url: signUpURL)
         request.httpMethod = HTTPMethod.post.rawValue
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        
-        let signUpRep = ["email": "\(user.username)",
-            "password": "\(user.password)"]
-        
+        let jsonEncoder = JSONEncoder()
         do {
-            let jsonData = try jsonEncoder.encode(signUpRep)
+            let jsonData = try jsonEncoder.encode(user)
             request.httpBody = jsonData
+            let jsonString = String.init(data: jsonData, encoding: .utf8)
+            print(jsonString!)
         } catch {
-            NSLog("Encode error in sign up")
+            print("Error encoding user object \(error)")
             completion(error)
             return
         }
         
-        URLSession.shared.dataTask(with: request) { _, response, error in
+        URLSession.shared.dataTask(with: request) { (_, response, error) in
             if let error = error {
                 completion(error)
                 return
             }
-            
-            if let response = response as? HTTPURLResponse {
-                NSLog("Response: \(response)")
+            if let response = response as? HTTPURLResponse, response.statusCode != 200 || response.statusCode != 201 {
+                completion(NSError(domain: "", code: response.statusCode, userInfo: nil))
+                return
+            }
+            DispatchQueue.main.async {
                 completion(nil)
-                return
             }
-            
-            completion(nil)
         }.resume()
-        
     }
+
+func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void) = { _ in }) {
+    let userID = lifeHacks.userID ?? UUID().uuidString
+    let requestURL = baseURL.appendingPathExtension("api/posts").appendingPathComponent(userID)
+    var request = URLRequest(url: requestURL)
+    request.httpMethod = "PUT"
     
-    func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void) = { _ in }) {
-        let userID = lifeHacks.userID ?? UUID().uuidString
-        let requestURL = baseURL.appendingPathExtension("api/posts").appendingPathComponent(userID)
-        var request = URLRequest(url: requestURL)
-        request.httpMethod = "PUT"
-        
-        do {
-            request.httpBody = try JSONEncoder().encode(lifeHacks.lifeHacksRepresentation)
-        } catch {
-            NSLog("Error encoding in put method: \(error)")
+    do {
+        request.httpBody = try JSONEncoder().encode(lifeHacks.lifeHacksRepresentation)
+    } catch {
+        NSLog("Error encoding in put method: \(error)")
+        completion(error)
+        return
+    }
+    URLSession.shared.dataTask(with: request) { _, _, error in
+        if let error = error {
+            NSLog("Error Putting Life Hack to server: \(error)")
             completion(error)
             return
         }
-        URLSession.shared.dataTask(with: request) { _, _, error in
-            if let error = error {
-                NSLog("Error Putting Life Hack to server: \(error)")
-                completion(error)
-                return
-            }
-            completion(nil)
-        }.resume()
-    }
+        completion(nil)
+    }.resume()
+}
     
     func deleteFromServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void) = { _ in }) {
         guard let userID = lifeHacks.userID else {
@@ -208,7 +209,9 @@ class APIController{
             }
             
             do {
-                self.lifeHacksRep = try JSONDecoder().decode([String: LifeHacksRepresentation].self, from: data).map({$0.value})
+                self.lifeHacksRep = try JSONDecoder().decode([LifeHacksRepresentation].self, from: data)
+                let jsonString = String.init(data: data, encoding: .utf8)
+                print(jsonString!)
                 self.updateLifeHacks(with: self.lifeHacksRep ?? [])
             } catch {
                 NSLog("Error decoding JSON data when fetching life hack: \(error)")

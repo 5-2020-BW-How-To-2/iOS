@@ -21,6 +21,7 @@ struct LifeHacksRepresentation: Codable {
     
     enum CodingKeys: String, CodingKey {
         case lifeHackDescription = "description"
-        case title, materials, userID, video, id
+        case userID = "user_id"
+        case title, materials, video, id
     }
 }
