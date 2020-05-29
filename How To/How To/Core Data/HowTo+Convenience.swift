@@ -14,15 +14,13 @@ extension LifeHacks {
         guard let title = title,
             let lifeHackDescription = lifeHackDescription,
             let materials = materials,
-            let video = video,
             let instructions = instructions else {return nil }
         return LifeHacksRepresentation(title: title,
                                        lifeHackDescription: lifeHackDescription,
                                        materials: materials,
                                        instructions: instructions,
                                        identifier: identifier,
-                                       userID: userID,
-                                       video: video)
+                                       userID: userID)
     }
     @discardableResult convenience init(title: String,
                                         lifeHackDescription: String,
@@ -30,7 +28,6 @@ extension LifeHacks {
                                         instructions: String,
                                         identifier: Int32,
                                         userID: Int32,
-                                        video: String,
                                         context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         self.init(context: context)
         self.title = title
@@ -38,12 +35,10 @@ extension LifeHacks {
         self.materials = materials
         self.identifier = identifier
         self.userID = userID
-        self.video = video
     }
     @discardableResult convenience init?(lifeHacksRepresentation: LifeHacksRepresentation,
                                          context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
-        guard let video = lifeHacksRepresentation.video,
-            let instructions = lifeHacksRepresentation.instructions,
+        guard let instructions = lifeHacksRepresentation.instructions,
             let materials = lifeHacksRepresentation.materials,
             let identifier = lifeHacksRepresentation.identifier else { return nil }
         self.init(title: lifeHacksRepresentation.title,
@@ -51,21 +46,18 @@ extension LifeHacks {
                   materials: materials,
                   instructions: instructions,
                   identifier: identifier,
-                  userID: lifeHacksRepresentation.userID,
-                  video: video)
+                  userID: lifeHacksRepresentation.userID)
     }
     @discardableResult convenience init(title: String,
                                         lifeHackDescription: String,
                                         materials: String,
                                         instructions: String,
                                         userID: Int32,
-                                        video: String,
                                         context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         self.init(context: context)
         self.title = title
         self.lifeHackDescription = lifeHackDescription
         self.materials = materials
         self.userID = userID
-        self.video = video
 }
 }

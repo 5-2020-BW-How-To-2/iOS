@@ -15,10 +15,9 @@ struct LifeHacksRepresentation: Codable {
     var instructions: String?
     var identifier: Int32?
     var userID: Int32
-    var video: String?
     enum CodingKeys: String, CodingKey {
         case lifeHackDescription = "description"
         case userID = "user_id"
-        case title, materials, video, identifier
+        case title, materials, identifier
     }
 }

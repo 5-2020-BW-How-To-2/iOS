@@ -141,17 +141,14 @@ func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void)
                         lifeHackDescription: String,
                         materials: String?,
                         instructions: String?,
-                        userID: Int32,
-                        video: String?) {
+                        userID: Int32) {
         guard let materials = materials,
-            let instructions = instructions,
-            let video = video else { return }
+            let instructions = instructions else { return }
         let lifeHacks = LifeHacks(title: title,
                                   lifeHackDescription: lifeHackDescription,
                                   materials: materials,
                                   instructions: instructions,
-                                  userID: userID,
-                                  video: video)
+                                  userID: userID)
         sendToServer(lifeHacks: lifeHacks)
         do {
             try CoreDataStack.shared.mainContext.save()
@@ -165,13 +162,11 @@ func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void)
                          title: String,
                          lifeHackDescription: String,
                          materials: String?,
-                         instructions: String,
-                         video: String?) {
+                         instructions: String) {
         lifeHacks.title = title
         lifeHacks.lifeHackDescription = lifeHackDescription
         lifeHacks.materials = materials
         lifeHacks.instructions = instructions
-        lifeHacks.video = video
         sendToServer(lifeHacks: lifeHacks)
         do {
             try CoreDataStack.shared.mainContext.save()
@@ -280,6 +275,5 @@ func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void)
         lifeHacks.lifeHackDescription = representation.lifeHackDescription
         lifeHacks.materials = representation.materials
         lifeHacks.instructions = representation.instructions
-        lifeHacks.video = representation.video
     }
 }

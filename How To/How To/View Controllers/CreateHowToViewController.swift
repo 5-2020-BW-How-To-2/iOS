@@ -16,7 +16,6 @@ class CreateHowToViewController: UIViewController {
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
     @IBOutlet weak var materialsTextField: UITextField!
-    @IBOutlet weak var videoLinkTextField: UITextField!
     @IBOutlet weak var instructionsLabel: UILabel!
     @IBOutlet weak var instructionsTextView: UITextView!
     override func viewDidLoad() {
@@ -33,15 +32,12 @@ class CreateHowToViewController: UIViewController {
             !description.isEmpty,
             let materials = materialsTextField.text,
             !materials.isEmpty,
-            let video = videoLinkTextField.text,
-            !video.isEmpty,
             let instructions = instructionsTextView.text,
             !instructions.isEmpty else { return }
         apiController?.createLifeHack(title: title,
                                       lifeHackDescription: description,
                                       materials: materials,
                                       instructions: instructions,
-                                      userID: userID,
-                                      video: video)
+                                      userID: userID)
     }
 }

@@ -33,15 +33,13 @@ class MyHowToTableViewController: UITableViewController {
         if editingStyle == .delete {
             guard let lifeHackFR = apiController.myLifeHacksRep?[indexPath.row] else { return }
             guard let materials = lifeHackFR.materials,
-                let instructions = lifeHackFR.instructions,
-                let video = lifeHackFR.video else { return }
+                let instructions = lifeHackFR.instructions else { return }
             let lifeHack =
                 LifeHacks(title: lifeHackFR.title,
                                      lifeHackDescription: lifeHackFR.lifeHackDescription,
                                      materials: materials,
                                      instructions: instructions,
-                                     userID: lifeHackFR.userID,
-                                     video: video)
+                                     userID: lifeHackFR.userID)
             apiController.delete(lifeHacks: lifeHack)
             apiController.deleteFromServer(lifeHacks: lifeHack)
             let alert = UIAlertController(title: "Success", message: "Life Hack is deleted", preferredStyle: .alert)

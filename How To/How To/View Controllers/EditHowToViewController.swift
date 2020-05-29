@@ -17,7 +17,6 @@ class EditHowToViewController: UIViewController {
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
     @IBOutlet weak var materialsTextField: UITextField!
-    @IBOutlet weak var videoLinkTextField: UITextField!
     @IBOutlet weak var instructionsLabel: UILabel!
     @IBOutlet weak var instructionsTextView: UITextView!
     override func viewDidLoad() {
@@ -32,8 +31,6 @@ class EditHowToViewController: UIViewController {
                 !description.isEmpty,
                 let materials = materialsTextField.text,
                 !materials.isEmpty,
-                let video = videoLinkTextField.text,
-                !video.isEmpty,
                 let instructions = instructionsTextView.text,
                 !instructions.isEmpty,
                 let lifeHacks = lifeHacks else {
@@ -42,7 +39,6 @@ class EditHowToViewController: UIViewController {
             lifeHacks.title = title
             lifeHacks.lifeHackDescription = description
             lifeHacks.materials = materials
-            lifeHacks.video = video
             lifeHacks.instructions = instructions
             do {
                 try CoreDataStack.shared.mainContext.save()
@@ -58,7 +54,6 @@ class EditHowToViewController: UIViewController {
         titleTextField.isUserInteractionEnabled = editing
         descriptionTextField.isUserInteractionEnabled = editing
         materialsTextField.isUserInteractionEnabled = editing
-        videoLinkTextField.isUserInteractionEnabled = editing
         instructionsTextView.isUserInteractionEnabled = editing
         navigationItem.hidesBackButton = editing
     }
@@ -71,8 +66,6 @@ class EditHowToViewController: UIViewController {
             descriptionTextField.isUserInteractionEnabled = isEditing
             materialsTextField.text = lifeHacks?.materials
             materialsTextField.isUserInteractionEnabled = isEditing
-            videoLinkTextField.text = lifeHacks?.video
-            videoLinkTextField.isUserInteractionEnabled = isEditing
             instructionsTextView.text = lifeHacks?.instructions
             instructionsTextView.isUserInteractionEnabled = isEditing
             navigationItem.rightBarButtonItem = editButtonItem

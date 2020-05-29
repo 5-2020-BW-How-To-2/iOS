@@ -13,7 +13,6 @@ class HowToDetailsViewController: UIViewController {
     // MARK: - Outlets
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var materialsLabel: UILabel!
-    @IBOutlet weak var videoLinkLabel: UILabel!
     @IBOutlet weak var instructionsTextView: UITextView!
     // MARK: - Properties
     var lifeHacks: LifeHacks? {
@@ -35,7 +34,6 @@ class HowToDetailsViewController: UIViewController {
             title = lifeHacks.title
             descriptionLabel.text = "Description: \(lifeHacks.lifeHackDescription ?? " ")"
             materialsLabel.text = "Materials: \(lifeHacks.materials ?? " ")"
-            videoLinkLabel.text = "Video Link: \(lifeHacks.video ?? " ")"
             instructionsTextView.text = lifeHacks.instructions ?? " "
         }
     }
