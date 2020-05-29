@@ -16,9 +16,9 @@ class APIController {
     private lazy var signInURL = baseURL.appendingPathComponent("api/auth/login")
     private lazy var signUpURL = baseURL.appendingPathComponent("api/auth/register")
     static var bearer: Bearer?
-    var lifeHacksRep: [LifeHacksRepresentation]?
-    var myLifeHacksRep: [LifeHacksRepresentation]?
-    var userID: Int16?
+    static var lifeHacksRep: [LifeHacksRepresentation]?
+    static var myLifeHacksRep: [LifeHacksRepresentation]?
+    var userID: Int?
     private lazy var jsonEncoder: JSONEncoder = {
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
@@ -57,8 +57,6 @@ class APIController {
             let decoder = JSONDecoder()
             do {
                 APIController.self.bearer = try decoder.decode(Bearer.self, from: data)
-                //self.userID = try decoder.decode(user.id.self, from: data)
-               // print(self.userID!)
                 print(APIController.self.bearer!)
             } catch {
                 print("Error decoding bearer token \(error)")
@@ -206,6 +204,7 @@ func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void)
                 let jsonString = String.init(data: data, encoding: .utf8)!
                 print(jsonString)
                 self.updateLifeHacks(with: lifeHacksRepresentations)
+                APIController.self.lifeHacksRep = lifeHacksRepresentations
             } catch {
                 NSLog("Error decoding JSON data when fetching life hack: \(error)")
                 completion(error)
@@ -216,8 +215,8 @@ func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void)
     }
     //Fetch Life Hacks by user id
     func fetchMyLifeHacksFromServer(completion: @escaping ((Error?) -> Void) = { _ in }) {
-        let lifeHacks = LifeHacks()
-        let requestURL = baseURL.appendingPathComponent("api/posts/").appendingPathExtension(String(lifeHacks.userID))
+        guard let userID = userID else { return }
+        let requestURL = baseURL.appendingPathComponent("api/posts/").appendingPathExtension(String(userID))
         var request = URLRequest(url: requestURL)
         request.httpMethod = "GET"
         URLSession.shared.dataTask(with: request) { data, _, error in
@@ -236,7 +235,7 @@ func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void)
                 let jsonString = String.init(data: data, encoding: .utf8)!
                 print(jsonString)
                 self.updateLifeHacks(with: lifeHacksRepresentations)
-                self.myLifeHacksRep = lifeHacksRepresentations
+                APIController.self.myLifeHacksRep = lifeHacksRepresentations
             } catch {
                 NSLog("Error decoding JSON data when fetching life hack: \(error)")
                 completion(error)

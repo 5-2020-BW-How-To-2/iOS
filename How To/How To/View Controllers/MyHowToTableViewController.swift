@@ -14,24 +14,28 @@ class MyHowToTableViewController: UITableViewController {
     var apiController = APIController()
     override func viewDidLoad() {
         super.viewDidLoad()
-        apiController.fetchMyLifeHacksFromServer()
+        apiController.fetchMyLifeHacksFromServer { _ in
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
     }
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return apiController.myLifeHacksRep?.count ?? 0
+        return APIController.myLifeHacksRep?.count ?? 0
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MyHowToCell", for: indexPath)
-        cell.textLabel?.text = apiController.myLifeHacksRep?[indexPath.row].title
-        cell.detailTextLabel?.text = apiController.myLifeHacksRep?[indexPath.row].lifeHackDescription
+        cell.textLabel?.text = APIController.myLifeHacksRep?[indexPath.row].title
+        cell.detailTextLabel?.text = APIController.myLifeHacksRep?[indexPath.row].lifeHackDescription
         return cell
     }
     override func tableView(_ tableView: UITableView,
                             commit editingStyle: UITableViewCell.EditingStyle,
                             forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            guard let lifeHackFR = apiController.myLifeHacksRep?[indexPath.row] else { return }
+            guard let lifeHackFR = APIController.myLifeHacksRep?[indexPath.row] else { return }
             guard let materials = lifeHackFR.materials,
                 let instructions = lifeHackFR.instructions else { return }
             let lifeHack =

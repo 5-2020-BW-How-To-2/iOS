@@ -14,7 +14,11 @@ class HowToTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-       apiController.fetchLifeHacksFromServer()
+        apiController.fetchLifeHacksFromServer { _ in
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -30,12 +34,12 @@ class HowToTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return apiController.lifeHacksRep?.count ?? 0
+        return APIController.lifeHacksRep?.count ?? 0
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HowToCell", for: indexPath)
-        cell.textLabel?.text = apiController.lifeHacksRep?[indexPath.row].title
-        cell.detailTextLabel?.text = apiController.lifeHacksRep?[indexPath.row].lifeHackDescription
+        cell.textLabel?.text = APIController.lifeHacksRep?[indexPath.row].title
+        cell.detailTextLabel?.text = APIController.lifeHacksRep?[indexPath.row].lifeHackDescription
         return cell
     }
 
@@ -46,7 +50,7 @@ class HowToTableViewController: UITableViewController {
             guard let showLifeHackVC = segue.destination as? HowToDetailsViewController,
                 let index = tableView.indexPathForSelectedRow else {return}
             showLifeHackVC.apiController = apiController
-            showLifeHackVC.title = apiController.lifeHacksRep?[index.row].title
+            showLifeHackVC.title = APIController.lifeHacksRep?[index.row].title
         case "LoginModalSegue":
             guard let loginVC = segue.destination as? LoginViewController else {return}
             loginVC.apiController = apiController

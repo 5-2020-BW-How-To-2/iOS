@@ -9,7 +9,11 @@
 import Foundation
 
 struct User: Codable {
-    var identifier: Int32?
+    var userID: Int32?
     var username: String = ""
     var password: String = ""
+    enum CodingKeys: String, CodingKey {
+        case userID = "user_id"
+        case username, password
+    }
 }
