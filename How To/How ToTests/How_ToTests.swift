@@ -9,9 +9,8 @@
 import XCTest
 @testable import How_To
 
-class How_ToTests: XCTestCase {
-    
-    
+class HowToTests: XCTestCase {
+
     func testSignUp() {
         let login = APIController()
         let user = User()
@@ -26,6 +25,4 @@ class How_ToTests: XCTestCase {
         }
         wait(for: [expectation], timeout: 10)
     }
-    
-
 }

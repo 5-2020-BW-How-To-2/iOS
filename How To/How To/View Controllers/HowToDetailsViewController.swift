@@ -10,31 +10,26 @@ import UIKit
 
 class HowToDetailsViewController: UIViewController {
 
-    //MARK: - Outlets
+    // MARK: - Outlets
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var materialsLabel: UILabel!
     @IBOutlet weak var videoLinkLabel: UILabel!
     @IBOutlet weak var instructionsTextView: UITextView!
-    
-    //MARK: - Properties
+    // MARK: - Properties
     var lifeHacks: LifeHacks? {
            didSet {
                updateViews()
            }
        }
-       
        var apiController: APIController? {
            didSet {
                updateViews()
            }
        }
-    
-
     override func viewDidLoad() {
         super.viewDidLoad()
         updateViews()
     }
-    
     func updateViews() {
         if let lifeHacks = lifeHacks, isViewLoaded {
             title = lifeHacks.title

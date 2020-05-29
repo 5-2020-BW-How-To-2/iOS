@@ -8,20 +8,17 @@
 
 import Foundation
 
-
 struct LifeHacksRepresentation: Codable {
     var title: String
     var lifeHackDescription: String
     var materials: String?
     var instructions: String?
-    var id: Int32?
+    var identifier: Int32?
     var userID: Int32
     var video: String?
-    
-    
     enum CodingKeys: String, CodingKey {
         case lifeHackDescription = "description"
         case userID = "user_id"
-        case title, materials, video, id
+        case title, materials, video, identifier
     }
 }

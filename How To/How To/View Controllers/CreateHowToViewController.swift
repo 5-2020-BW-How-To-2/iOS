@@ -9,21 +9,16 @@
 import UIKit
 
 class CreateHowToViewController: UIViewController {
-    
-    
-    //MARK: Properties
-    
+    // MARK: Properties
     var apiController: APIController?
     var userID: Int32 = Int32(APIController.sharedInstance.userID ?? 0)
-    
-    //MARK: Outlets
+    // MARK: Outlets
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
     @IBOutlet weak var materialsTextField: UITextField!
     @IBOutlet weak var videoLinkTextField: UITextField!
     @IBOutlet weak var instructionsLabel: UILabel!
     @IBOutlet weak var instructionsTextView: UITextView!
-    
     override func viewDidLoad() {
 
     }
@@ -31,7 +26,6 @@ class CreateHowToViewController: UIViewController {
     @IBAction func cancel(_ sender: Any) {
         navigationController?.dismiss(animated: true, completion: nil)
     }
-    
     @IBAction func save(_ sender: Any) {
         guard let title = titleTextField.text,
             !title.isEmpty,
@@ -43,9 +37,11 @@ class CreateHowToViewController: UIViewController {
             !video.isEmpty,
             let instructions = instructionsTextView.text,
             !instructions.isEmpty else { return }
-        
-        apiController?.createLifeHack(title: title, lifeHackDescription: description, materials: materials, instructions: instructions, userID: userID, video: video)
+        apiController?.createLifeHack(title: title,
+                                      lifeHackDescription: description,
+                                      materials: materials,
+                                      instructions: instructions,
+                                      userID: userID,
+                                      video: video)
     }
-    
-    
 }

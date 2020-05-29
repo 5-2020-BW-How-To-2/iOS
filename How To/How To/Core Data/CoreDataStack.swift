@@ -10,11 +10,10 @@ import Foundation
 import CoreData
 
 class CoreDataStack {
-    
     static let shared = CoreDataStack()
 
     lazy var container: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "How_To")
+        let container = NSPersistentContainer(name: "LifeHacks")
 
         container.loadPersistentStores { _, error in
             if let error = error {

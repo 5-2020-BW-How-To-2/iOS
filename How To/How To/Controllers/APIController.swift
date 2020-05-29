@@ -10,31 +10,26 @@ import Foundation
 import UIKit
 import CoreData
 
-class APIController{
-    
+class APIController {
     static let sharedInstance = APIController()
     private let baseURL = URL(string: "https://clhowto.herokuapp.com/")!
     private lazy var signInURL = baseURL.appendingPathComponent("api/auth/login")
     private lazy var signUpURL = baseURL.appendingPathComponent("api/auth/register")
     static var bearer: Bearer?
     var lifeHacksRep: [LifeHacksRepresentation]?
+    var myLifeHacksRep: [LifeHacksRepresentation]?
     var userID: Int16?
-    
     private lazy var jsonEncoder: JSONEncoder = {
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
         return encoder
     }()
-    
     private lazy var jsonDecoder = JSONDecoder()
-    
     // User logs in
-    func signIn(with user: User, completion: @escaping (Error?) -> ()) {
-       
+    func signIn(with user: User, completion: @escaping (Error?) -> Void) {
         var request = URLRequest(url: signInURL)
         request.httpMethod = HTTPMethod.post.rawValue
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
         let jsonEncoder = JSONEncoder()
         do {
             let jsonData = try jsonEncoder.encode(user)
@@ -76,12 +71,10 @@ class APIController{
         }.resume()
     }
     //User signs up
-    func signUp(with user: User, completion: @escaping (Error?) -> (Void)) {
-       
+    func signUp(with user: User, completion: @escaping (Error?) -> Void) {
         var request = URLRequest(url: signUpURL)
         request.httpMethod = HTTPMethod.post.rawValue
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
         let jsonEncoder = JSONEncoder()
         do {
             let jsonData = try jsonEncoder.encode(user)
@@ -93,7 +86,6 @@ class APIController{
             completion(error)
             return
         }
-        
         URLSession.shared.dataTask(with: request) { (_, response, error) in
             if let error = error {
                 completion(error)
@@ -114,7 +106,6 @@ func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void)
     let requestURL = baseURL.appendingPathComponent("api/posts")
     var request = URLRequest(url: requestURL)
     request.httpMethod = "PUT"
-    
     do {
         request.httpBody = try JSONEncoder().encode(lifeHacks.lifeHacksRepresentation)
     } catch {
@@ -133,11 +124,9 @@ func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void)
 }
     // Delete Life Hacks by user
     func deleteFromServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void) = { _ in }) {
-        
-        let requestURL = baseURL.appendingPathComponent("api/posts/").appendingPathExtension(String(lifeHacks.userID))
+        let requestURL = baseURL.appendingPathComponent("api/posts/").appendingPathComponent(String(lifeHacks.userID))
         var request = URLRequest(url: requestURL)
         request.httpMethod = "DELETE"
-        
         URLSession.shared.dataTask(with: request) { (_, _, error) in
             if let error = error {
                 NSLog("Error deleting Life Hack from server: \(error)")
@@ -148,24 +137,36 @@ func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void)
         }.resume()
     }
     // User Creates a Life Hack
-    func createLifeHack(title: String, lifeHackDescription: String, materials: String?, instructions: String?, userID: Int32, video: String?) {
-        
+    func createLifeHack(title: String,
+                        lifeHackDescription: String,
+                        materials: String?,
+                        instructions: String?,
+                        userID: Int32,
+                        video: String?) {
         guard let materials = materials,
             let instructions = instructions,
             let video = video else { return }
-        
-        let lifeHacks = LifeHacks(title: title, lifeHackDescription: lifeHackDescription, materials: materials, instructions: instructions, userID: userID, video: video)
+        let lifeHacks = LifeHacks(title: title,
+                                  lifeHackDescription: lifeHackDescription,
+                                  materials: materials,
+                                  instructions: instructions,
+                                  userID: userID,
+                                  video: video)
         sendToServer(lifeHacks: lifeHacks)
         do {
             try CoreDataStack.shared.mainContext.save()
-            
         } catch {
             NSLog("Saving new life hack failed")
         }
         NotificationCenter.default.post(name: NSNotification.Name("LifeHackAdded"), object: self)
     }
     // User updates a life hack
-    func updateLifeHacks(lifeHacks: LifeHacks, title: String, lifeHackDescription: String, materials: String?, instructions: String, video: String?) {
+    func updateLifeHacks(lifeHacks: LifeHacks,
+                         title: String,
+                         lifeHackDescription: String,
+                         materials: String?,
+                         instructions: String,
+                         video: String?) {
         lifeHacks.title = title
         lifeHacks.lifeHackDescription = lifeHackDescription
         lifeHacks.materials = materials
@@ -191,24 +192,20 @@ func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void)
     }
     // Fetches all Life Hacks
     func fetchLifeHacksFromServer(completion: @escaping ((Error?) -> Void) = { _ in }) {
-        
         let requestURL = baseURL.appendingPathComponent("api/posts")
         var request = URLRequest(url: requestURL)
         request.httpMethod = "GET"
-        
         URLSession.shared.dataTask(with: request) { data, _, error in
             if let error = error {
                 NSLog("Error fetching entries from server: \(error)")
                 completion(error)
                 return
             }
-            
             guard let data = data else {
                 NSLog("No data returned from data task")
                 completion(NSError())
                 return
             }
-            
             do {
                 let lifeHacksRepresentations = try JSONDecoder().decode([LifeHacksRepresentation].self, from: data)
                 let jsonString = String.init(data: data, encoding: .utf8)!
@@ -219,72 +216,58 @@ func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void)
                 completion(error)
                 return
             }
-            
             completion(nil)
-            
         }.resume()
     }
-    
     //Fetch Life Hacks by user id
     func fetchMyLifeHacksFromServer(completion: @escaping ((Error?) -> Void) = { _ in }) {
         let lifeHacks = LifeHacks()
         let requestURL = baseURL.appendingPathComponent("api/posts/").appendingPathExtension(String(lifeHacks.userID))
         var request = URLRequest(url: requestURL)
         request.httpMethod = "GET"
-        
         URLSession.shared.dataTask(with: request) { data, _, error in
             if let error = error {
                 NSLog("Error fetching entries from server: \(error)")
                 completion(error)
                 return
             }
-            
             guard let data = data else {
                 NSLog("No data returned from data task")
                 completion(NSError())
                 return
             }
-            
             do {
                 let lifeHacksRepresentations = try JSONDecoder().decode([LifeHacksRepresentation].self, from: data)
                 let jsonString = String.init(data: data, encoding: .utf8)!
                 print(jsonString)
                 self.updateLifeHacks(with: lifeHacksRepresentations)
+                self.myLifeHacksRep = lifeHacksRepresentations
             } catch {
                 NSLog("Error decoding JSON data when fetching life hack: \(error)")
                 completion(error)
                 return
             }
-            
             completion(nil)
-            
         }.resume()
     }
-    
-    private func updateLifeHacks(with representations: [LifeHacksRepresentation]){
-        let identifiersToFetch = representations.compactMap { $0.id }
+    private func updateLifeHacks(with representations: [LifeHacksRepresentation]) {
+        let identifiersToFetch = representations.compactMap { $0.identifier }
         let representationsById = Dictionary(uniqueKeysWithValues: zip(identifiersToFetch, representations))
         var lifeHacksToCreate = representationsById
-        
         let fetchRequest: NSFetchRequest<LifeHacks> = LifeHacks.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "identifier IN %@", identifiersToFetch)
-        
+        fetchRequest.predicate = NSPredicate(format: "id IN %@", identifiersToFetch)
         let context = CoreDataStack.shared.container.newBackgroundContext()
-        
         context.perform {
             do {
                 let existingLifeHacks = try context.fetch(fetchRequest)
-                
                 for lifeHack in existingLifeHacks {
-                    let representation = representationsById[lifeHack.id]
+                    let representation = representationsById[lifeHack.identifier]
                     self.update(lifeHacks: lifeHack, with: representation!)
-                    lifeHacksToCreate.removeValue(forKey: lifeHack.id)
+                    lifeHacksToCreate.removeValue(forKey: lifeHack.identifier)
                 }
-                
                 for representation in lifeHacksToCreate.values {
                     LifeHacks(lifeHacksRepresentation: representation, context: context)
                 }
-                
                 try context.save()
             } catch {
                 NSLog("Failed to fetch movies \(identifiersToFetch) with errpr: \(error)")
@@ -292,7 +275,6 @@ func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void)
             }
         }
     }
-    
     private func update(lifeHacks: LifeHacks, with representation: LifeHacksRepresentation) {
         lifeHacks.title = representation.title
         lifeHacks.lifeHackDescription = representation.lifeHackDescription
@@ -300,5 +282,4 @@ func sendToServer(lifeHacks: LifeHacks, completion: @escaping ((Error?) -> Void)
         lifeHacks.instructions = representation.instructions
         lifeHacks.video = representation.video
     }
-    
 }

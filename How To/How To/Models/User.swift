@@ -9,8 +9,7 @@
 import Foundation
 
 struct User: Codable {
-    var id: Int16?
+    var identifier: Int16?
     var username: String = ""
     var password: String = ""
 }
-

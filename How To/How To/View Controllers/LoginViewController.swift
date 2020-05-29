@@ -14,13 +14,11 @@ enum LoginType: String {
 }
 
 class LoginViewController: UIViewController {
-    
     // MARK: - Outlets
     @IBOutlet weak var loginTypeSegmentedControl: UISegmentedControl!
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var submitButton: UIButton!
-    
     // MARK: - Properties
     var loginType: LoginType?
     var apiController: APIController?
@@ -34,7 +32,6 @@ class LoginViewController: UIViewController {
         submitButton.layer.cornerRadius = 8.0
         submitButton.setTitle("Sign In", for: .normal)
     }
-    
     @IBAction func loginTypeChanged(_ sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 1 {
             loginType = .signUp
@@ -44,11 +41,12 @@ class LoginViewController: UIViewController {
             submitButton.setTitle("Sign In", for: .normal)
         }
     }
-    
-
     @IBAction func submitButtonTapped(_ sender: UIButton) {
         guard let apiController = apiController else {return}
-               if let username = usernameTextField.text, !username.isEmpty, let password = passwordTextField.text, !password.isEmpty {
+               if let username = usernameTextField.text,
+                !username.isEmpty,
+                let password = passwordTextField.text,
+                !password.isEmpty {
                 let user = User(username: username, password: password)
                    if loginType == .signUp {
                        apiController.signUp(with: user) {error in
@@ -56,7 +54,10 @@ class LoginViewController: UIViewController {
                                NSLog("Error occurred during sign up: \(error)")
                            } else {
                                DispatchQueue.main.async {
-                                   let alertController = UIAlertController(title: "Sign Up Done", message: "Please Login", preferredStyle: .alert)
+                                   let alertController =
+                                    UIAlertController(title: "Sign Up Done",
+                                 message: "Please Login",
+                                 preferredStyle: .alert)
                                    let alertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
                                    alertController.addAction(alertAction)
                                    self.present(alertController, animated: true) {
