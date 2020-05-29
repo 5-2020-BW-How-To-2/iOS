@@ -1,0 +1,6 @@
+framework module Pods_How_To {
+  umbrella header "Pods-How To-umbrella.h"
+
+  export *
+  module * { export * }
+}
